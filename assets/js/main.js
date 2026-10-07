@@ -16,7 +16,7 @@
   var T = {
     es: {
       title: 'Sandielly Ortega · Power BI & Data Analytics Engineer',
-      description: "Sandielly 'Sandy' Ortega Polanco — Ingeniero en Data Analytics & BI, Microsoft Certified Power BI Data Analyst. +10 años convirtiendo datos en KPIs para el C-suite. Autor Packt, speaker y creador de contenido.",
+      description: "Sandielly 'Sandy' Ortega Polanco — Ingeniero en Data Analytics & BI, Microsoft Certified Power BI Data Analyst. +10 años convirtiendo datos en KPIs para la alta dirección. Autor Packt, speaker y creador de contenido.",
       mailSubject: 'Contacto web — ',
       waText: 'Hola Sandy, vi tu sitio web y me gustaría conversar.',
       dashPh: '[IMAGEN] dashboard ',
@@ -178,6 +178,7 @@
   $$('.case-btn').forEach(function (b) {
     b.addEventListener('click', function () { openLightbox(Number(b.getAttribute('data-case'))); });
   });
+  if (cases.length < 2) { $('#lb-prev').hidden = true; $('#lb-next').hidden = true; }
   $('#lb-prev').addEventListener('click', function () { stepLightbox(-1); });
   $('#lb-next').addEventListener('click', function () { stepLightbox(1); });
   $('#lb-close').addEventListener('click', closeLightbox);
@@ -215,6 +216,30 @@
     f.allowFullscreen = true;
     li.innerHTML = '';
     li.appendChild(f);
+  });
+
+  /* ---------------- Carrusel de charlas ---------------- */
+  $$('[data-carousel]').forEach(function (track) {
+    var section = track.closest('section');
+    var prev = $('[data-car-prev]', section);
+    var next = $('[data-car-next]', section);
+    var ctrls = $('[data-car-ctrls]', section);
+    function step() {
+      var card = track.firstElementChild;
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return card ? card.getBoundingClientRect().width + gap : track.clientWidth;
+    }
+    function update() {
+      var max = track.scrollWidth - track.clientWidth;
+      ctrls.hidden = max <= 1;
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft >= max - 1;
+    }
+    prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
+    next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: reduceMotion ? 'auto' : 'smooth' }); });
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
   });
 
   /* ---------------- Formulario de contacto (mailto) ---------------- */

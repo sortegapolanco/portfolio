@@ -74,6 +74,7 @@ button { font-family: inherit; }
 .sec-head { margin-bottom: 40px; }
 .sec-head--split { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; }
 .sec-sub { margin: 0; font-size: 14px; color: var(--muted); max-width: 360px; }
+.sec-sub--below { margin-top: 12px; font-size: 15px; max-width: 520px; }
 .mono-label {
   font: 500 12px var(--mono); color: var(--muted); text-transform: uppercase; letter-spacing: .06em;
 }
@@ -101,6 +102,8 @@ button { font-family: inherit; }
   position: absolute; inset: 0; display: grid; place-items: center; padding: 8px; text-align: center;
   font: 500 12px var(--mono); color: var(--muted);
 }
+/* Si la imagen existe (onerror la elimina si no), el respaldo se oculta. */
+.slot:has(> img) > .slot-ph { visibility: hidden; }
 .slot-ph--hatch { background: repeating-linear-gradient(135deg, var(--soft) 0 10px, transparent 10px 20px); }
 .slot-ph--hatch > span { background: var(--bg); padding: 6px 10px; border-radius: 6px; }
 .slot-ph--initials { font: 700 14px var(--sans); color: var(--accent); letter-spacing: .02em; }
@@ -122,10 +125,9 @@ button { font-family: inherit; }
   font-weight: 800; letter-spacing: -0.01em; text-decoration: none;
 }
 .brand:hover { color: var(--ink); text-decoration: none; }
-.brand-mark {
-  width: 32px; height: 32px; border-radius: 9px; background: var(--accent); color: var(--on);
-  display: grid; place-items: center; font-size: 13px; font-weight: 800;
-}
+.brand-logo { width: 32px; height: 32px; display: block; flex: none; }
+/* Versión del logo según el tema activo. */
+html[data-theme="dark"] .only-light, html:not([data-theme="dark"]) .only-dark { display: none; }
 .brand-name { font-size: 15px; white-space: nowrap; }
 .nav-links { display: flex; gap: 22px; list-style: none; margin: 0; padding: 0; }
 .nav-links a {
@@ -200,7 +202,7 @@ button { font-family: inherit; }
 }
 .ring--outer { width: 118%; border: 1px solid rgba(79,195,222,.22); }
 .ring--inner { width: 86%; border: 1px solid rgba(79,195,222,.32); }
-.hero-photo img {
+.hero-photo > img {
   position: relative; display: block; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; object-position: 50% 0%;
   -webkit-mask-image: radial-gradient(ellipse 56% 70% at 50% 40%, #000 48%, transparent 88%);
   mask-image: radial-gradient(ellipse 56% 70% at 50% 40%, #000 48%, transparent 88%);
@@ -215,10 +217,7 @@ button { font-family: inherit; }
 .float-card--cert {
   right: -8%; bottom: 18%; display: flex; align-items: center; gap: 10px; padding: 12px 14px; max-width: 240px;
 }
-.ms-badge {
-  width: 38px; height: 38px; flex: none; border-radius: 10px; background: #0B6E8A; color: #FFFFFF;
-  display: grid; place-items: center; font: 700 12px var(--mono);
-}
+.cert-badge { width: 44px; height: 44px; flex: none; display: block; }
 .float-card--cert .txt { display: grid; gap: 2px; }
 .float-card--cert strong { font-size: 13px; font-weight: 800; line-height: 1.25; }
 .float-card--cert small { font: 500 11px var(--mono); color: #4A5A66; }
@@ -402,6 +401,8 @@ button { font-family: inherit; }
 }
 .client-chip .slot { width: 24px; height: 24px; border-radius: 50%; background: var(--surface); flex: none; }
 .client-chip .slot-ph--initials { font-size: 9px; padding: 0; }
+/* Los logos van siempre sobre blanco para que se lean igual en modo claro y oscuro. */
+.tl-logo .slot > img, .client-chip .slot > img { background: #FFFFFF; }
 .exp-clients-text {
   margin: 18px 0 0; padding-top: 16px; border-top: 1px dashed var(--line); font-size: 14px; color: var(--muted);
 }
@@ -432,7 +433,8 @@ button { font-family: inherit; }
   transition: transform .25s ease, box-shadow .25s ease;
 }
 .case:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(10,30,40,.10); }
-.case-media { aspect-ratio: 16 / 10; background: var(--soft); }
+.case-media { aspect-ratio: 16 / 9; background: var(--soft); }
+@media (min-width: 760px) { .case:only-child { grid-column: span 2; } }
 .case-btn {
   width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px;
   padding: 16px 18px; border: 0; border-top: 1px solid var(--line); background: transparent; color: var(--ink);
@@ -478,19 +480,33 @@ button { font-family: inherit; }
 .review blockquote { margin: 0; font-size: 15px; line-height: 1.6; flex: 1; text-wrap: pretty; }
 .review figcaption { font: 500 12px var(--mono); color: var(--muted); }
 
-/* ---------- Charlas ---------- */
-.talks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 32px 64px; }
-.talks { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--line); }
-.talk { position: relative; padding: 0 0 32px 28px; }
-.talk::before {
-  content: ""; position: absolute; left: -7px; top: 4px; width: 12px; height: 12px; border-radius: 50%;
-  background: var(--bg); border: 2px solid var(--accent);
+/* ---------- Charlas (carrusel) ---------- */
+.car-ctrls { display: flex; gap: 8px; }
+.car-btn {
+  width: 44px; height: 44px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface);
+  color: var(--ink); cursor: pointer; font-size: 16px; transition: border-color .2s, color .2s, opacity .2s;
 }
+.car-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.car-btn:disabled { opacity: .35; cursor: default; }
+.carousel {
+  list-style: none; margin: 0; padding: 0 0 4px; display: grid; grid-auto-flow: column;
+  grid-auto-columns: min(85%, 400px); gap: 20px; overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scroll-behavior: smooth; scrollbar-width: none;
+}
+.carousel::-webkit-scrollbar { display: none; }
+.carousel:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.talk-card {
+  scroll-snap-align: start; display: flex; flex-direction: column; border: 1px solid var(--line);
+  border-radius: 16px; overflow: hidden; background: var(--surface);
+}
+.talk-media { display: block; aspect-ratio: 3 / 2; overflow: hidden; background: var(--soft); }
+.talk-media--2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.talk-media a { display: block; overflow: hidden; }
+.talk-media img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+.talk-media:hover img, .talk-media a:hover img { transform: scale(1.03); }
+.talk-body { padding: 18px 20px 22px; }
 .talk-meta { margin: 0; font: 500 12.5px var(--mono); color: var(--muted); }
-.talk h3 { margin: 6px 0 0; font-size: 18px; font-weight: 700; }
-.talk-event { margin: 4px 0 0; font-size: 15px; color: var(--muted); }
-.talk-links { display: flex; gap: 16px; margin-top: 10px; font-size: 14px; font-weight: 700; }
-.talk-links a { color: var(--accent); }
+.talk-card h3 { margin: 8px 0 0; font-size: 18px; line-height: 1.3; font-weight: 700; text-wrap: pretty; }
 
 /* ---------- YouTube ---------- */
 .yt-handle { margin: 10px 0 0; font: 500 13px var(--mono); color: var(--muted); }
@@ -502,6 +518,15 @@ button { font-family: inherit; }
 .video iframe { width: 100%; height: 100%; border: 0; display: block; }
 
 /* ---------- Educación ---------- */
+/* Dos grupos: certificaciones (1 columna) y formación universitaria (2 columnas). */
+.edu-groups { display: grid; grid-template-columns: minmax(0, 1fr); gap: 40px 32px; }
+@media (min-width: 900px) { .edu-groups { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); } }
+.edu-group { display: grid; gap: 16px; align-content: start; }
+.edu-group-title {
+  margin: 0; padding-top: 14px; border-top: 2px solid var(--accent);
+  font: 600 12px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted);
+}
+.edu-group .edu { height: 100%; }
 .edu-grid {
   list-style: none; margin: 0; padding: 0; display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 16px;
@@ -515,7 +540,13 @@ button { font-family: inherit; }
   padding: 4px 8px; border-radius: 6px; background: var(--soft); color: var(--ink);
 }
 .edu-tag--cert { background: var(--accent); color: var(--on); }
-.edu h3 { margin: 4px 0 0; font-size: 17px; line-height: 1.35; font-weight: 700; text-wrap: pretty; }
+.edu-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 36px; }
+.edu-ico {
+  display: grid; place-items: center; width: 36px; height: 36px; flex: none; border-radius: 10px;
+  background: var(--soft); color: var(--accent);
+}
+.edu-badge { width: 64px; height: 64px; flex: none; margin: -14px -6px -14px 0; }
+.edu h4 { margin: 4px 0 0; font-size: 17px; line-height: 1.35; font-weight: 700; text-wrap: pretty; }
 .edu-org { margin: auto 0 0; padding-top: 8px; font-size: 14px; color: var(--muted); }
 
 /* ---------- Empresas ---------- */
@@ -529,6 +560,8 @@ button { font-family: inherit; }
 .logos li:hover { filter: grayscale(0); opacity: 1; }
 .logos .slot > img { background: transparent; padding: 0; }
 .logos .slot-ph { font: 800 16px var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+/* Logos oscuros con fondo transparente: en modo oscuro se muestran en blanco. */
+html[data-theme="dark"] .logos img.invert-dark { filter: brightness(0) invert(1); }
 
 /* ---------- Contacto ---------- */
 .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 48px 72px; }

@@ -57,14 +57,20 @@ Busca `[` o `PENDIENTE` en `index.html` para encontrarlos.
 |---|---|
 | CV en PDF: `cv/Sandielly-Ortega-CV-ES.pdf` y `cv/Sandielly-Ortega-CV-EN.pdf` | carpeta `cv/` |
 | Enlace de Calendly (`[CALENDLY]`) | hero y Contacto |
-| Usuario de Instagram (`[USUARIO]`) | hero y footer |
-| Charlas: fecha, lugar, tema, evento, enlaces | sección Charlas |
-| IDs de videos de YouTube: atributo `data-yt` de cada `<li class="video">` | sección YouTube |
+| Charlas: tema de Codecamp SDQ 2023 y de Big Data Day 2022, confirmar el año de Universidad O&M (2024) y enlaces a slides o video | sección Charlas |
 | Capturas de dashboards: `assets/img/dashboards/dash-1.png` … `dash-6.png` (16:10, datos anonimizados) | sección Casos |
-| Logos: `assets/img/logos/{ethos,proxify,megsoft,independiente,hodelpa,gocaribic}.png` | Experiencia y franja de empresas |
-| Logos de clientes: `assets/img/clientes/{accenga,complete-automation,medici}.png` | Experiencia (Proxify) |
+| Logo de Proxify con texto: `assets/img/logos/proxify-wordmark.png` (su sitio bloquea la descarga automática; mientras falte se muestra el nombre) | franja de empresas |
+| Logos de clientes que faltan: `assets/img/clientes/complete-automation.png` y `south-american-restaurants.png` | Experiencia |
 
 Mientras falte un logo, se muestran las iniciales de la empresa (o su nombre en la franja). Mientras falte una captura o la portada, se muestra un recuadro con su descripción.
+
+## Fotos de charlas
+
+Las fotos originales van en `images/`, que no se sube al repo (`.gitignore`) porque pesan varios MB. El sitio usa versiones web de ~1400 px (100–130 KB) en `assets/img/charlas/`. Para agregar una charla, reduce la foto a ese tamaño y copia un `<li class="talk">` de la sección Charlas.
+
+## Videos de YouTube
+
+Cada `<li class="video">` lleva el ID del video en `data-yt` y el título en `data-title`. Los videos no cargan si abres `index.html` directo desde la carpeta (YouTube da "Error 153"). Pruébalos con `python -m http.server`.
 
 ## Editar contenido
 

@@ -249,7 +249,7 @@
     var fd = new FormData(form);
     var name = fd.get('name');
     var body = fd.get('message') + '\n\n— ' + name + ' (' + fd.get('email') + ')';
-    window.location.href = 'mailto:sortegap1@gmail.com?subject=' +
+    window.location.href = 'mailto:sandielly.ortega@gmail.com?subject=' +
       encodeURIComponent(T[lang].mailSubject + name) + '&body=' + encodeURIComponent(body);
     $('.form-status', form).hidden = false;
   });

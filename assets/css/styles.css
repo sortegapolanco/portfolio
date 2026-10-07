@@ -184,6 +184,19 @@ html[data-theme="dark"] .only-light, html:not([data-theme="dark"]) .only-dark { 
   font-weight: 800; color: #FFFFFF;
 }
 .hero h1 .period { color: #4FC3DE; }
+.hero-hello { margin: 0 0 14px; font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: #4FC3DE; }
+/* Emoji de saludo: tamaño alineado al texto y un saludo corto al cargar (se desactiva con "reducir movimiento"). */
+.wave {
+  display: inline-block; font-size: 1.05em; line-height: 1; vertical-align: -0.08em;
+  transform-origin: 70% 75%; animation: sdWave 1.6s ease-in-out .8s 1 both;
+}
+@keyframes sdWave {
+  0%, 60%, 100% { transform: rotate(0); }
+  10%, 30% { transform: rotate(16deg); }
+  20% { transform: rotate(-8deg); }
+  40% { transform: rotate(-4deg); }
+  50% { transform: rotate(10deg); }
+}
 .hero-rule { width: 56px; height: 5px; border-radius: 3px; background: #4FC3DE; margin-top: 24px; }
 .hero-role { margin: 24px 0 0; font-size: 17px; font-weight: 600; color: #4FC3DE; }
 .socials { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 0; padding: 0; }
